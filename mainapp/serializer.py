@@ -6,7 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
 		model = models.User
 		exclude=["last_login" ,"date_joined" , "groups" , "user_permissions"]
 
-class CouserSerializer(serializers.ModelSerializer):
+class CourseSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Course
 		fields = "__all__"
