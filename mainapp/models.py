@@ -9,7 +9,7 @@ class User(AbstractUser):
 	pan_card = models.CharField(max_length=10)
 	bank = models.CharField(max_length=20)
 	bank_addr = models.CharField(max_length=50)
-	bank_ac_no = models.IntegerField()
+	bank_ac_no = models.IntegerField(default=0)
 	ifsc_code = models.CharField(max_length=11)
 
 	def __str__(self) -> str:
@@ -27,6 +27,7 @@ class Subject(models.Model):
 	name = models.CharField(max_length=20)
 	sem = models.IntegerField()
 	course = models.ForeignKey(to=Course , on_delete=models.CASCADE)
+	user_id = models.ForeignKey(to=User  , on_delete=models.DO_NOTHING)
 
 class Billing(models.Model):
 	teacher = models.ForeignKey(to=User  , on_delete=models.DO_NOTHING)
