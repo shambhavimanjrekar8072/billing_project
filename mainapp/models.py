@@ -27,7 +27,7 @@ class Subject(models.Model):
 	name = models.CharField(max_length=20)
 	sem = models.IntegerField()
 	course = models.ForeignKey(to=Course , on_delete=models.CASCADE)
-	user_id = models.ForeignKey(to=User  , on_delete=models.DO_NOTHING)
+	user_id = models.ForeignKey(to=User  , on_delete=models.DO_NOTHING , blank=True, null=True)
 
 class Billing(models.Model):
 	teacher = models.ForeignKey(to=User  , on_delete=models.DO_NOTHING)
