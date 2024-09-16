@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-*n972ssg+v8tf^vgt3!n$&3nsv#^)@(7!aq3tb2s*p2z*bs*el
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app' , '127.0.0.1:8000']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	"django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'billing_backend.urls'
@@ -125,3 +127,11 @@ MEDIA_URL='/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
 
 AUTH_USER_MODEL = 'mainapp.User'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage' 
+STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
