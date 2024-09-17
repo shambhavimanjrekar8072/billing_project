@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-import dj_database_url
 from pathlib import Path
 import os
 
@@ -26,7 +25,7 @@ SECRET_KEY = 'django-insecure-*n972ssg+v8tf^vgt3!n$&3nsv#^)@(7!aq3tb2s*p2z*bs*el
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app' , 'localhost']
 
 
 # Application definition
