@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 from pathlib import Path
 import os
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+dotenv_file = os.path.join(BASE_DIR , ".env.local")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -25,7 +29,7 @@ SECRET_KEY = 'django-insecure-*n972ssg+v8tf^vgt3!n$&3nsv#^)@(7!aq3tb2s*p2z*bs*el
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app' , 'localhost']
+ALLOWED_HOSTS = ['.vercel.app' , 'localhost' , '127.0.0.1']
 
 
 # Application definition
@@ -74,16 +78,43 @@ TEMPLATES = [
 WSGI_APPLICATION = 'billing_backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# Replace the SQLite DATABASES configuration with PostgreSQL:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DATABASE'),                      
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
+    }
+}
+
+# DATABASE = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         "NAME": "billing_iips.billing_iips",
+#         'ENFORCE_SCHEMA': False,
+#         'CLIENT': {
+           
+#            "host": "mongodb+srv://mehulvv:mehulvv@cluster0.djas5.mongodb.net/billing_iips?retryWrites=true&w=majority",
+#            "username": "mehulvv",
+#            "password": "mehulvv",
+#            "authMechanism": "SCRAM-SHA-1",
+#            'ssl': True,
+#             'retryWrites': True,
+#             'w': 'majority',
+#         }, 
+#     },
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -130,15 +161,9 @@ MEDIA_URL='/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
 
 AUTH_USER_MODEL = 'mainapp.User'
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# This setting informs Django of the URI path from which your static files will be served to users
-# Here, they well be accessible at your-domain.onrender.com/static/... or yourcustomdomain.com/static/...
 STATIC_URL = '/static/'
-# This production code might break development mode, so we check whether we're in DEBUG mode
-if not DEBUG:    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+if not DEBUG:    
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-    # and renames the files with unique names for each version to support long-term caching
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
