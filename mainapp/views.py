@@ -11,11 +11,11 @@ from rest_framework import generics
 
 
 class UserListView(APIView):
-	def get(self , request):
+	def get(self , request): # list of users 
 		users = models.User.objects.all()
 		ser = serializer.UserSerializer(users , many=True)
 		return Response(ser.data , status=status.HTTP_200_OK)
-	def post(self , request):
+	def post(self , request): # create the user
 		ser = serializer.UserSerializer(data =  request.data)
 		if ser.is_valid():
 			ser.save()
@@ -27,7 +27,7 @@ class UserListView(APIView):
 			return Response(ser.errors , status.HTTP_400_BAD_REQUEST)
 
 class LoginUserView(APIView):
-	def get(self , request ):
+	def get(self , request ): # log_in the user and return the detail of user
 		user = auth.authenticate(username = request.data["username"] , password=request.data["password"])
 		if user is not None :
 			ser =  serializer.UserSerializer(user)
@@ -37,7 +37,7 @@ class LoginUserView(APIView):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 		
 class ForgetPasswordView(APIView):
-	def get(self , request):
+	def get(self , request): #forget the password
 		user = request.user
 		if user.check_password(request.data["old_password"]):
 			user.set_password(request.data["new_password"])
@@ -49,36 +49,36 @@ class ForgetPasswordView(APIView):
 
 class UserDetailView(APIView):
 
-	def getUser(self , pk):
+	def getUser(self , username): #fetch the deatil of user from db
 		try:
-			return models.User.objects.get(pk = pk)
+			return models.User.objects.get(username = username)
 		except:
 			return None
 
-	def get(self , request , pk):
-		user = self.getUser(pk)
+	def get(self , request , username): #return the detail of specific user
+		user = self.getUser(username)
 		if user is None:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		ser = serializer.UserSerializer(user)
 		return Response(ser.data , status.HTTP_200_OK)
 	
-	def patch(self , request , pk):
-		user = self.getUser(pk)
+	def patch(self , request , username): #update the detail of user
+		user = self.getUser(username)
 		ser = serializer.UserSerializer(user , data=request.data , partial=True)
 		if ser.is_valid():
 			ser.save()
 			return Response(ser.data , status = status.HTTP_202_ACCEPTED)
 		return Response(ser.errors , status = status.HTTP_400_BAD_REQUEST)
 
-	def delete(self , request , pk):
-		user = self.getUser(pk)
+	def delete(self , request , username): #delete the user
+		user = self.getUser(username)
 		if user is None:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		user.delete()
 		return Response(status=status.HTTP_204_NO_CONTENT)
 	
 class GetInActiveUser(APIView):
-	def get(self , request):
+	def get(self , request): #list of inactive user
 		users = models.User.objects.filter(is_active = False)
 		ser = serializer.UserSerializer(users , many = True)
 		return Response(ser.data , status.HTTP_200_OK)

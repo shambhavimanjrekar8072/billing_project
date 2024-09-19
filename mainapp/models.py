@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
-# Create your models here.
 
+#Table for User (specifically Teacher)
 class User(AbstractUser):
 	address = models.CharField(max_length=50)
 	college_name = models.CharField(max_length=50 ,  default="International Institute of Professional Studies")
@@ -15,6 +15,7 @@ class User(AbstractUser):
 	def __str__(self) -> str:
 		return self.username
 
+#Table for Course
 class Course(models.Model):
 	id = models.CharField(max_length=4 , primary_key=True)
 	name =  models.CharField(max_length=10)
@@ -22,6 +23,7 @@ class Course(models.Model):
 	def __str__(self) -> str:
 		return self.id + self.name
 	
+#Table for Subject
 class Subject(models.Model):
 	id =  models.CharField(max_length=7 , primary_key=True)
 	name = models.CharField(max_length=20)
@@ -29,6 +31,7 @@ class Subject(models.Model):
 	course = models.ForeignKey(to=Course , on_delete=models.CASCADE)
 	user_id = models.ForeignKey(to=User  , on_delete=models.DO_NOTHING , blank=True, null=True)
 
+#Table for Storing the Billing Details
 class Billing(models.Model):
 	teacher = models.ForeignKey(to=User  , on_delete=models.DO_NOTHING)
 	course =  models.ForeignKey(to=Course , on_delete=models.DO_NOTHING)
