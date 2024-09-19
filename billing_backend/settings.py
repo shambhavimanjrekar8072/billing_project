@@ -9,7 +9,7 @@ dotenv_file = os.path.join(BASE_DIR , ".env.local")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-*n972ssg+v8tf^vgt3!n$&3nsv#^)@(7!aq3tb2s*p2z*bs*el'
 
 DEBUG = True
 
