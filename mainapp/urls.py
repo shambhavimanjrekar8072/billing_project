@@ -10,6 +10,8 @@ urlpatterns = [
 	path('user/<str:username>' , views.UserDetailView.as_view()), #for getting detail of specific user , delete and update the user
 	path('inactiveuser' , views.GetInActiveUser.as_view()), #getting the list of inactive user
 	path('forgetpassword' , views.ForgetPasswordView.as_view()), #for forgetting the password
+	path('logout' , views.LogOutAPI.as_view()),
+
 	
 	#for courses
 

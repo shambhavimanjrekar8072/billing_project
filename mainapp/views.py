@@ -8,7 +8,7 @@ from django.contrib import auth
 from django.db.models import Q
 from django.conf import settings
 from rest_framework import generics
-
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserListView(APIView):
 	def get(self , request): # list of users 
@@ -32,9 +32,19 @@ class LoginUserView(APIView):
 		if user is not None :
 			ser =  serializer.UserSerializer(user)
 			auth.login(request , user)
-			return Response(ser.data , status.HTTP_202_ACCEPTED)
+			refresh = RefreshToken.for_user(user)
+			return Response({
+				'refresh': str(refresh),
+				'access': str(refresh.access_token),
+				'user' : ser.data
+			})
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
+		
+class LogOutAPI(APIView):
+	def get(self , request):
+		auth.logout(request)
+		return Response(status=status.HTTP_204_NO_CONTENT)
 		
 class ForgetPasswordView(APIView):
 	def get(self , request): #forget the password
@@ -57,6 +67,7 @@ class UserDetailView(APIView):
 
 	def get(self , request , username): #return the detail of specific user
 		user = self.getUser(username)
+		
 		if user is None:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		ser = serializer.UserSerializer(user)
