@@ -27,7 +27,7 @@ class UserListView(APIView):
 			return Response(ser.errors , status.HTTP_400_BAD_REQUEST)
 
 class LoginUserView(APIView):
-	def get(self , request ): # log_in the user and return the detail of user
+	def post(self , request ): # log_in the user and return the detail of user
 		user = auth.authenticate(username = request.data["username"] , password=request.data["password"])
 		if user is not None :
 			ser =  serializer.UserSerializer(user)
